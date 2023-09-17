@@ -3,9 +3,6 @@ from math import floor
 from enum import Enum
 
 
-Solution = list[list['Token']]
-
-
 class KnownCells(TypedDict):
     cell: tuple[int, int]
     value: 'Token'

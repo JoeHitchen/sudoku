@@ -1,4 +1,4 @@
-from structures import Board, Cell, Token, Solution
+from structures import Board, Cell, Token
 
 
 def print_with_grid(rows: list[str]) -> None:
@@ -50,11 +50,11 @@ def full_state(board: Board) -> None:
     print('╚═════════╧═════════╧═════════╩═════════╧═════════╧═════════╩═════════╧═════════╧═════════╝')  # noqa: E501
 
 
-def marking(board: Board, solution: Solution) -> None:
+def marking(board: Board, solution: Board) -> None:
     """Prints the marking of the solution"""
 
-    def cell_result_marker(board_cell: Cell, solution_value: Token) -> str:
-        correct = solution_value in board_cell.options
+    def cell_result_marker(board_cell: Cell, solution_value: Cell) -> str:
+        correct = solution_value.value in board_cell.options
         if board_cell.initial:
             return '.' if correct else '@'
         if board_cell.solved:
@@ -62,7 +62,7 @@ def marking(board: Board, solution: Solution) -> None:
         return 'y' if correct else 'n'
 
     row_results = []
-    for board_row, solution_row in zip(board.rows, solution):
+    for board_row, solution_row in zip(board.rows, solution.rows):
         result_markers = [cell_result_marker(board_row[i], solution_row[i]) for i in range(0, 9)]
         row_results.append(''.join(result_markers))
     print_with_grid(row_results)

@@ -1,6 +1,6 @@
 import json
 
-from structures import Token, Solution, KnownCells
+from structures import Board, Token, KnownCells
 
 
 def puzzle_loader(puzzle_name: str) -> list[KnownCells]:
@@ -17,9 +17,16 @@ def puzzle_loader(puzzle_name: str) -> list[KnownCells]:
     return known_cells
 
 
-def solution_loader(puzzle_name: str) -> Solution:
+def solution_loader(puzzle_name: str) -> Board:
     with open('puzzles/{}_solution.json'.format(puzzle_name)) as file:
         raw = json.load(file)
 
-    return [[Token(cell) for cell in row] for row in raw]
+    solution: list[KnownCells] = []
+    for row_number, row in enumerate(raw, start = 1):
+        for column_number, value in enumerate(row, start = 1):
+            solution.append({'cell': (row_number, column_number), 'value': Token(value)})
+
+    board = Board()
+    board.set_puzzle(solution)
+    return board
 
