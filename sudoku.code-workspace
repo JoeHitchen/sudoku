@@ -1,0 +1,12 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "flake8.importStrategy": "fromEnvironment",
+        "python.terminal.activateEnvInCurrentTerminal": true,
+        "python.defaultInterpreterPath": "${workspaceFolder}/venv-sudoku"
+    }
+}
