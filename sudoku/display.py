@@ -1,4 +1,4 @@
-from structures import Board, Cell, Token
+from .structures import Board, Cell, Token
 
 
 def print_with_grid(rows: list[str]) -> None:
