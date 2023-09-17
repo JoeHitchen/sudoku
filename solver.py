@@ -1,11 +1,20 @@
+import argparse
+
 from sudoku.structures import Board
 from sudoku.file_io import puzzle_loader, solution_loader
 from sudoku.strategies import resolve_singlets, resolve_doublets
 from sudoku import display
 
-puzzle_name = 'puzzler_028'
-print('Puzzle {}'.format(puzzle_name))
-initial_values = puzzle_loader(puzzle_name)
+
+parser = argparse.ArgumentParser(
+    description = 'This program solves Sudoku puzzles',
+)
+parser.add_argument('puzzle_name', help = 'The puzzle identifier within the `puzzles` directory')
+script_args = parser.parse_args()
+
+
+print('Puzzle {}'.format(script_args.puzzle_name))
+initial_values = puzzle_loader(script_args.puzzle_name)
 
 board = Board()
 board.set_puzzle(initial_values)
@@ -44,6 +53,6 @@ display.solved(board)
 
 print('')
 print('Marking')
-solution = solution_loader(puzzle_name)
+solution = solution_loader(script_args.puzzle_name)
 display.marking(board, solution)
 
