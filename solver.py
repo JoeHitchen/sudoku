@@ -1,6 +1,6 @@
-from file_io import puzzle_loader, solution_loader
-from structures import Board, Cell, Token
-import display
+from sudoku.file_io import puzzle_loader, solution_loader
+from sudoku.structures import Board, Cell, Token
+from sudoku import display
 
 puzzle_name = 'puzzler_028'
 print('Puzzle {}'.format(puzzle_name))

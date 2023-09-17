@@ -1,6 +1,6 @@
 import json
 
-from structures import Board, Token, KnownCells
+from .structures import Board, Token, KnownCells
 
 
 def puzzle_loader(puzzle_name: str) -> list[KnownCells]:
