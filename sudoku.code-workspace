@@ -6,6 +6,7 @@
     ],
     "settings": {
         "flake8.importStrategy": "fromEnvironment",
+        "python.testing.unittestEnabled": true,
         "python.terminal.activateEnvInCurrentTerminal": true,
         "python.defaultInterpreterPath": "${workspaceFolder}/venv-sudoku"
     }

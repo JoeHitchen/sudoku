@@ -52,5 +52,4 @@ When marking a solution like this, the following code is used:
 * Expanding the range of strategies that can be applied.
 * Idenfying a rights-free source of Sudoku puzzles to test the algorithm against harder puzzles.
 * Generalising to varitions on the standard Sudoku puzzle.
-* Adding tests to verify the solution methodology.
 
