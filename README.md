@@ -49,7 +49,7 @@ When marking a solution like this, the following code is used:
 
 
 ## Future Directions
-* Expanding the range of strategies that can be applied.
+* Expanding the range of strategies that can be applied - https://www.sudokuwiki.org/Strategy_Families is a detailed guide
 * Idenfying a rights-free source of Sudoku puzzles to test the algorithm against harder puzzles.
 * Generalising to varitions on the standard Sudoku puzzle.
 
