@@ -11,10 +11,10 @@ The strategies to be used are ordered, and the solver will only attempt a later 
 If any strategy updates the board, the solver will break and start a new iteration with the first (and simplest) method.
 
 ## Strategies
-1. **Singlets** are the only cell in a grouping which can take a given value.
-  They can be can be resolved immediately to that value.
-2. **Doublets** are a pair of cells within one grouping which can only take the same two values.
-  Since these two cells must take both these values, these values cannot be placed in any other cells in the grouping.
+1. **Naked Singles** are cells with only one possibility remaining, and the solver will immediately resolve naked singles when a cell becomes one, regardless of other strategies being pursued at the time.
+1. **Last Remaining** cells are the only cell in a grouping which can still take a given value, and so must be resolved to that value.
+1. **Naked Pairs** are pairs of cells within one grouping which can only take the same two values.
+  Since these two cells must take both these values, these values can be removed from other cells in the same grouping.
 
 If you have an example of a puzzle which cannot be solved with the current strategies, please raise an issue with the puzzle specification, since identifying these gaps will be the biggest motivator for further work on this project.
 

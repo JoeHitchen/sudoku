@@ -2,7 +2,7 @@ import argparse
 
 from sudoku.structures import Board
 from sudoku.file_io import puzzle_loader, solution_loader
-from sudoku.strategies import resolve_singlets, resolve_doublets
+from sudoku.strategies import resolve_last_remaining, resolve_naked_pairs
 from sudoku import display
 
 
@@ -29,16 +29,16 @@ for i in range(0, 15):
         print('Round {}; Solution is complete'.format(i + 1))
         break
 
-    # Resolve singlets
-    num_singlets = resolve_singlets(board)
-    print('Round {}; Found: {} singlet(s)'.format(i + 1, num_singlets))
-    if num_singlets:
+    # Resolve last remaining
+    num_last_remaining = resolve_last_remaining(board)
+    print('Round {}; Found: {} last remaining cell(s)'.format(i + 1, num_last_remaining))
+    if num_last_remaining:
         continue
 
-    # Resolve doublets
-    num_doublets = resolve_doublets(board)
-    print('Round {}; Found: {} doublet(s)'.format(i + 1, num_doublets))
-    if num_doublets:
+    # Resolve naked pairs
+    num_naked_pairs = resolve_naked_pairs(board)
+    print('Round {}; Found: {} doublet(s)'.format(i + 1, num_naked_pairs))
+    if num_naked_pairs:
         continue
 
     print('Round {}; Strategies exhausted'.format(i + 1))

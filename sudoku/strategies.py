@@ -1,10 +1,10 @@
 from .structures import Board, Cell, Token
 
 
-def resolve_singlets(board: Board) -> int:
-    """A singlet is a the only cell in a group which can take a specific value, so must do so."""
+def resolve_last_remaining(board: Board) -> int:
+    """A cell that is the only cell in a group which can still take a given value must do so."""
 
-    singlets: set[tuple[Cell, Token]] = set()
+    last_remaining_cells: set[tuple[Cell, Token]] = set()
     for grouping in board.all_groups:
         for token in Token:
             possible_cells = []
@@ -13,25 +13,27 @@ def resolve_singlets(board: Board) -> int:
                     possible_cells.append(cell)
 
             if len(possible_cells) == 1:
-                singlets.add((possible_cells[0], token))
+                last_remaining_cells.add((possible_cells[0], token))
 
-    for singlet in singlets:
-        singlet[0].solve(singlet[1])
+    for last_remaining_cell in last_remaining_cells:
+        last_remaining_cell[0].solve(last_remaining_cell[1])
 
-    return len(singlets)
+    return len(last_remaining_cells)
 
 
-def resolve_doublets(board: Board) -> int:
-    """A doublet is a pair of cells within a grouping which both only take the same pair of values.
+def resolve_naked_pairs(board: Board) -> int:
+    """A naked pair is a pair of cells which can only take the same two values.
     Since these two cells MUST take these values, they are excluded from other cells in the group.
 
-    This method implicity checks for triplets and higher order combinations too.
+    This method implicity checks for triplets and higher order combinations that take exactly the
+    same set of numbers. It does not perform a full check for naked triples/quads with differing
+    sets of numbers in the cells.
     """
 
     def options_key(options: set[Token]) -> str:
         return ''.join(str(token) for token in options)
 
-    doublets: list[tuple[list[Cell], list[Cell]]] = []
+    naked_pairs: list[tuple[list[Cell], list[Cell]]] = []
     for group in board.all_groups:
 
         cell_options_map: dict[str, list[Cell]] = {}
@@ -44,18 +46,18 @@ def resolve_doublets(board: Board) -> int:
                 cell_options_map[cell_options_map_key] = []
             cell_options_map[cell_options_map_key].append(cell)
 
-        doublets.extend(
-            (doublet, group)
-            for options, doublet in cell_options_map.items()
-            if len(doublet) == len(options)  # Length 1 sets should be disallowed by 'solved' check
+        naked_pairs.extend(
+            (option_pairing, group)
+            for options, option_pairing in cell_options_map.items()
+            if len(option_pairing) == len(options)
         )
 
-    for doublet, group in doublets:
+    for option_pairing, group in naked_pairs:
         for cell in group:
-            if cell in doublet or cell.solved:
+            if cell in option_pairing or cell.solved:
                 continue
-            for value in doublet[0].options:
+            for value in option_pairing[0].options:
                 cell.exclude(value)
 
-    return len(doublets)
+    return len(naked_pairs)
 

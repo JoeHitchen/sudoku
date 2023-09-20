@@ -6,7 +6,7 @@ from . import strategies
 
 class Test_Strategies(TestCase):
 
-    def test__singlet(self) -> None:
+    def test__last_remaining(self) -> None:
 
         puzzle_board = Board()
         puzzle_board.set_puzzle([
@@ -16,7 +16,7 @@ class Test_Strategies(TestCase):
             {'cell': (3, 8), 'value': Token.EIGHT},
         ])
 
-        strategies.resolve_singlets(puzzle_board)
+        strategies.resolve_last_remaining(puzzle_board)
 
         resolved_board = Board()
         resolved_board.set_puzzle([
@@ -32,7 +32,7 @@ class Test_Strategies(TestCase):
             [cell.options for cell in resolved_board.cells],
         )
 
-    def test__doublets(self) -> None:
+    def test__naked_pairs(self) -> None:
 
         puzzle_board = Board()
         puzzle_board.set_puzzle([
@@ -59,7 +59,7 @@ class Test_Strategies(TestCase):
             {'cell': (8, 8), 'value': Token.THREE},
         ])
 
-        strategies.resolve_doublets(puzzle_board)
+        strategies.resolve_naked_pairs(puzzle_board)
 
         resolved_board = Board()
         resolved_board.set_puzzle([
