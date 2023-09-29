@@ -3,7 +3,7 @@ from math import floor
 from enum import Enum
 
 
-class KnownCells(TypedDict):
+class KnownCell(TypedDict):
     cell: tuple[int, int]
     value: 'Token'
 
@@ -89,7 +89,7 @@ class Board():
         """The collection of all possible groups"""
         return [*self.rows, *self.columns, *self.squares]
 
-    def set_puzzle(self, initial_values: list[KnownCells]) -> None:
+    def set_puzzle(self, initial_values: list[KnownCell]) -> None:
         """Adds known values from the puzzle selection to the board"""
 
         def cell_index(row_number: int, column_number: int) -> int:
