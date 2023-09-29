@@ -3,7 +3,7 @@ import json
 from .structures import Board, Token, KnownCells
 
 
-def puzzle_loader(puzzle_name: str) -> list[KnownCells]:
+def puzzle_loader(puzzle_name: str) -> Board:
     with open('puzzles/{}_puzzle.json'.format(puzzle_name)) as file:
         raw = json.load(file)
 
@@ -14,7 +14,9 @@ def puzzle_loader(puzzle_name: str) -> list[KnownCells]:
                 continue
             known_cells.append({'cell': (i + 1, j + 1), 'value': Token(cell)})
 
-    return known_cells
+    board = Board()
+    board.set_puzzle(known_cells)
+    return board
 
 
 def solution_loader(puzzle_name: str) -> Board:

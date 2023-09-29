@@ -1,6 +1,5 @@
 import argparse
 
-from sudoku.structures import Board
 from sudoku.file_io import puzzle_loader, solution_loader
 from sudoku.strategies import resolve_last_remaining, resolve_naked_pairs
 from sudoku import display
@@ -14,10 +13,7 @@ script_args = parser.parse_args()
 
 
 print('Puzzle {}'.format(script_args.puzzle_name))
-initial_values = puzzle_loader(script_args.puzzle_name)
-
-board = Board()
-board.set_puzzle(initial_values)
+board = puzzle_loader(script_args.puzzle_name)
 display.initial(board)
 display.full_state(board)
 
