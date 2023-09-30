@@ -5,24 +5,59 @@ import html
 import requests
 
 from .structures import Board, Token, KnownCell
+from . import file_io
 
 
 DAILY_TEMPLATE_URL = 'https://www.sudokuwiki.org/Print/Print_Daily_Sudoku.aspx?day={}{}'
 
 
+def puzzle_number_from_date(date: date) -> int:
+    return (date - date.fromisoformat('2008-01-01')).days
+
+
 def puzzle_name_from_date(date: date) -> str:
     """Generates the puzzle name for a given date."""
-    return 'wiki_daily_{}'.format((date - date.fromisoformat('2008-01-01')).days)
+    return 'wiki_daily_{}'.format(puzzle_number_from_date(date))
 
 
 def daily_puzzle_reader(date: date) -> Board:
-    """Retrieves the daily puzzle for a given date."""
-    return _daily_reader(DAILY_TEMPLATE_URL.format(date, ''))
+    """Loads the Sudoku Wiki Daily Puzzle for a given date, using a local cache if possible."""
+
+    puzzle_number = puzzle_number_from_date(date)
+    puzzle_name = puzzle_name_from_date(date)
+    puzzle_string = 'Sudoku Wiki Daily Puzzle #{} ({})'.format(puzzle_number, date)
+
+    try:
+        puzzle = file_io.puzzle_loader(puzzle_name)
+        print(f'Loaded {puzzle_string} from cache')
+
+    except FileNotFoundError:
+        puzzle = _daily_reader(DAILY_TEMPLATE_URL.format(date, ''))
+        print(f'Retrieved {puzzle_string} from site')
+
+        file_io.puzzle_writer(puzzle_name, puzzle)
+
+    return puzzle
 
 
 def daily_solution_reader(date: date) -> Board:
     """Retrieves the solution to the daily puzzle for a given date."""
-    return _daily_reader(DAILY_TEMPLATE_URL.format(date, '&solution=please'))
+
+    puzzle_number = puzzle_number_from_date(date)
+    puzzle_name = puzzle_name_from_date(date)
+    puzzle_string = 'Sudoku Wiki Daily Solution #{} ({})'.format(puzzle_number, date)
+
+    try:
+        solution = file_io.solution_loader(puzzle_name)
+        print(f'Loaded {puzzle_string} from cache')
+
+    except FileNotFoundError:
+        solution = _daily_reader(DAILY_TEMPLATE_URL.format(date, '&solution=please'))
+        print(f'Retrieved {puzzle_string} from site'.format())
+
+        file_io.solution_writer(puzzle_name, solution)
+
+    return solution
 
 
 def _daily_reader(url: str) -> Board:
