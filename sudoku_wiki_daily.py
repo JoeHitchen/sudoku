@@ -1,19 +1,22 @@
+from datetime import date
 import argparse
 
-from sudoku.file_io import puzzle_loader, solution_loader
+from sudoku import sudoku_wiki_integrations
 from sudoku.strategies import resolve_last_remaining, resolve_naked_pairs
 from sudoku import display
 
 
 parser = argparse.ArgumentParser(
-    description = 'This program solves Sudoku puzzles',
+    description = 'This program solves the Sudoku Wiki Daily puzzles',
 )
-parser.add_argument('puzzle_name', help = 'The puzzle identifier within the `puzzles` directory')
+parser.add_argument(
+    'puzzle_date',
+    type = lambda d: date.fromisoformat(d),
+    help = 'The date of the puzzle to be solved',
+)
 script_args = parser.parse_args()
 
-
-print('Puzzle {}'.format(script_args.puzzle_name))
-board = puzzle_loader(script_args.puzzle_name)
+board = sudoku_wiki_integrations.daily_puzzle_reader(script_args.puzzle_date)
 display.initial(board)
 display.full_state(board)
 
@@ -49,6 +52,6 @@ display.solved(board)
 
 print('')
 print('Marking')
-solution = solution_loader(script_args.puzzle_name)
+solution = sudoku_wiki_integrations.daily_solution_reader(script_args.puzzle_date)
 display.marking(board, solution)
 
