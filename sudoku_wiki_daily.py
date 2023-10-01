@@ -23,6 +23,7 @@ display.full_state(board)
 # Solve
 previous_last_remaining: list[strategies.LastRemaining] = []
 previous_naked_pairs: list[strategies.NakedPair] = []
+previous_y_wings: list[strategies.YWing] = []
 for i in range(0, 15):
 
     if board.is_solved:
@@ -44,6 +45,14 @@ for i in range(0, 15):
         previous_naked_pairs = naked_pairs
         continue
     previous_naked_pairs = naked_pairs
+
+    # Resolve Y-wings
+    y_wings = strategies.resolve_y_wings(board)
+    print('Round {}; Found: {} y-wing(s)'.format(i + 1, len(y_wings)))
+    if y_wings and not y_wings == previous_y_wings:
+        previous_y_wings = y_wings
+        continue
+    previous_y_wings = y_wings
 
     print('Round {}; Strategies exhausted'.format(i + 1))
     break

@@ -3,6 +3,7 @@ from .structures import Board, Cell, Token
 
 LastRemaining = tuple[Cell, Token]
 NakedPair = tuple[list[Cell], list[Cell]]
+YWing = tuple[tuple[Cell, Cell, Cell], Token]
 
 
 def resolve_last_remaining(board: Board) -> list[LastRemaining]:
@@ -64,4 +65,71 @@ def resolve_naked_pairs(board: Board) -> list[NakedPair]:
                 cell.exclude(value)
 
     return naked_pairs
+
+
+def resolve_y_wings(board: Board) -> list[YWing]:
+
+    two_option_cells = [cell for cell in board.cells if len(cell.options) == 2]
+
+    y_wings: list[YWing] = []
+
+    for pivot in two_option_cells:
+        for index, branch_1 in enumerate(two_option_cells[:-1]):
+
+            if branch_1 == pivot:
+                continue
+
+            if not (
+                branch_1.row == pivot.row
+                or branch_1.column == pivot.column
+                or branch_1.square == pivot.square
+            ):
+                continue
+
+            intersect_pivot_1 = branch_1.options.intersection(pivot.options)
+            if not len(intersect_pivot_1) == 1:
+                continue
+
+            for branch_2 in two_option_cells[index + 1:]:
+
+                if branch_2 == pivot or branch_2 == branch_1:
+                    continue
+
+                if not (
+                    branch_2.row == pivot.row
+                    or branch_2.column == pivot.column
+                    or branch_2.square == pivot.square
+                ):
+                    continue
+
+                intersect_pivot_2 = branch_2.options.intersection(pivot.options)
+                if not len(intersect_pivot_2) == 1:
+                    continue
+
+                intersect_1_2 = branch_2.options.intersection(branch_1.options)
+                if not len(intersect_1_2) == 1:
+                    continue
+
+                if intersect_pivot_1 == intersect_pivot_2:
+                    continue
+
+                if ((pivot, branch_2, branch_1), list(intersect_1_2)[0]) in y_wings:
+                    continue
+
+                y_wings.append(((pivot, branch_1, branch_2), list(intersect_1_2)[0]))
+
+
+    for y_wing, token in y_wings:
+
+        branch_1 = y_wing[1]
+        branch_2 = y_wing[2]
+        branch_2_cover = [*branch_2.row, *branch_2.column, *branch_2.square]
+        for cell in [*branch_1.row, *branch_1.column, *branch_1.square]:
+            if cell in y_wing:
+                continue
+            if cell not in branch_2_cover:
+                continue
+            cell.exclude(token)
+
+    return y_wings
 
