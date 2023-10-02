@@ -97,6 +97,109 @@ class Test_Strategies(TestCase):
             [cell.options for cell in resolved_board.cells],
         )
 
+    def test__intersection__pointing_pair(self) -> None:
+
+        puzzle_board = Board()
+        puzzle_board.set_puzzle([
+            {'cell': (1, 4), 'value': Token.ONE},
+            {'cell': (1, 7), 'value': Token.SEVEN},
+            {'cell': (1, 8), 'value': Token.EIGHT},
+            {'cell': (1, 9), 'value': Token.NINE},
+            {'cell': (3, 1), 'value': Token.SEVEN},
+            {'cell': (3, 2), 'value': Token.EIGHT},
+            {'cell': (3, 3), 'value': Token.NINE},
+            {'cell': (3, 8), 'value': Token.FIVE},
+            {'cell': (3, 9), 'value': Token.SIX},
+            {'cell': (5, 9), 'value': Token.TWO},
+            {'cell': (6, 9), 'value': Token.ONE},
+            {'cell': (7, 8), 'value': Token.TWO},
+            {'cell': (8, 8), 'value': Token.THREE},
+        ])
+
+        strategies.resolve_intersections(puzzle_board)
+
+        resolved_board = Board()
+        resolved_board.set_puzzle([
+            {'cell': (1, 4), 'value': Token.ONE},
+            {'cell': (1, 7), 'value': Token.SEVEN},
+            {'cell': (1, 8), 'value': Token.EIGHT},
+            {'cell': (1, 9), 'value': Token.NINE},
+            {'cell': (2, 7), 'value': Token.TWO},
+            {'cell': (2, 8), 'value': Token.FOUR},
+            {'cell': (2, 9), 'value': Token.THREE},
+            {'cell': (3, 1), 'value': Token.SEVEN},
+            {'cell': (3, 2), 'value': Token.EIGHT},
+            {'cell': (3, 3), 'value': Token.NINE},
+            {'cell': (3, 7), 'value': Token.ONE},
+            {'cell': (3, 8), 'value': Token.FIVE},
+            {'cell': (3, 9), 'value': Token.SIX},
+            {'cell': (5, 9), 'value': Token.TWO},
+            {'cell': (6, 9), 'value': Token.ONE},
+            {'cell': (7, 8), 'value': Token.TWO},
+            {'cell': (8, 8), 'value': Token.THREE},
+        ])
+
+        self.assertEqual(
+            [cell.options for cell in puzzle_board.cells],
+            [cell.options for cell in resolved_board.cells],
+        )
+
+    def test__intersection__box_line(self) -> None:
+
+        puzzle_board = Board()
+        puzzle_board.set_puzzle([
+            {'cell': (1, 1), 'value': Token.SEVEN},
+            {'cell': (1, 2), 'value': Token.EIGHT},
+            {'cell': (1, 3), 'value': Token.NINE},
+            {'cell': (1, 4), 'value': Token.ONE},
+            {'cell': (2, 7), 'value': Token.SEVEN},
+            {'cell': (2, 8), 'value': Token.EIGHT},
+            {'cell': (2, 9), 'value': Token.NINE},
+            {'cell': (3, 8), 'value': Token.FIVE},
+            {'cell': (3, 9), 'value': Token.SIX},
+            {'cell': (5, 2), 'value': Token.TWO},
+            {'cell': (6, 2), 'value': Token.THREE},
+            {'cell': (6, 5), 'value': Token.FOUR},
+            {'cell': (7, 3), 'value': Token.TWO},
+            {'cell': (8, 3), 'value': Token.FOUR},
+            {'cell': (8, 4), 'value': Token.THREE},
+            {'cell': (9, 4), 'value': Token.FOUR},
+        ])
+
+        strategies.resolve_intersections(puzzle_board)
+
+        resolved_board = Board()
+        resolved_board.set_puzzle([
+            {'cell': (1, 1), 'value': Token.SEVEN},
+            {'cell': (1, 2), 'value': Token.EIGHT},
+            {'cell': (1, 3), 'value': Token.NINE},
+            {'cell': (1, 4), 'value': Token.ONE},
+            {'cell': (2, 4), 'value': Token.TWO},
+            {'cell': (2, 5), 'value': Token.THREE},
+            {'cell': (2, 6), 'value': Token.FOUR},
+            {'cell': (2, 7), 'value': Token.SEVEN},
+            {'cell': (2, 8), 'value': Token.EIGHT},
+            {'cell': (2, 9), 'value': Token.NINE},
+            {'cell': (3, 1), 'value': Token.TWO},
+            {'cell': (3, 2), 'value': Token.FOUR},
+            {'cell': (3, 3), 'value': Token.THREE},
+            {'cell': (3, 7), 'value': Token.ONE},
+            {'cell': (3, 8), 'value': Token.FIVE},
+            {'cell': (3, 9), 'value': Token.SIX},
+            {'cell': (5, 2), 'value': Token.TWO},
+            {'cell': (6, 2), 'value': Token.THREE},
+            {'cell': (6, 5), 'value': Token.FOUR},
+            {'cell': (7, 3), 'value': Token.TWO},
+            {'cell': (8, 3), 'value': Token.FOUR},
+            {'cell': (8, 4), 'value': Token.THREE},
+            {'cell': (9, 4), 'value': Token.FOUR},
+        ])
+
+        self.assertEqual(
+            [cell.options for cell in puzzle_board.cells],
+            [cell.options for cell in resolved_board.cells],
+        )
+
     def test__y_wings__row_column(self) -> None:
 
         puzzle_board = Board()

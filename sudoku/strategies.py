@@ -3,6 +3,7 @@ from .structures import Board, Cell, Token
 
 LastRemaining = tuple[Cell, Token]
 NakedPair = tuple[list[Cell], list[Cell]]
+Intersection = tuple[list[Cell], Token, list[Cell]]
 YWing = tuple[tuple[Cell, Cell, Cell], Token]
 
 
@@ -65,6 +66,56 @@ def resolve_naked_pairs(board: Board) -> list[NakedPair]:
                 cell.exclude(value)
 
     return naked_pairs
+
+
+def resolve_intersections(board: Board) -> list[Intersection]:
+
+    intersections: list[Intersection] = []
+
+    for group in board.all_groups:
+
+        token_locations_map: dict[Token, list[Cell]] = {token: [] for token in Token}
+
+        for cell in group:
+            if cell.solved:
+                continue
+            for token in cell.options:
+                token_locations_map[token].append(cell)
+
+        token_locations_map = {
+            token: locations
+            for token, locations in token_locations_map.items()
+            if len(locations) > 1
+        }
+
+        for token, locations in token_locations_map.items():
+
+            row = locations[0].row if locations[0].row != group else None
+            column = locations[0].column if locations[0].column != group else None
+            square = locations[0].square if locations[0].square != group else None
+
+            for cell in locations[1:]:
+                if row and not cell.row == row:
+                    row = None
+                if column and not cell.column == column:
+                    column = None
+                if square and not cell.square == square:
+                    square = None
+
+            if row:
+                intersections.append((locations, token, row))
+            if column:
+                intersections.append((locations, token, column))
+            if square:
+                intersections.append((locations, token, square))
+
+
+    for main_cells, value, target_cells in intersections:
+        for target_cell in target_cells:
+            if target_cell not in main_cells:
+                target_cell.exclude(value)
+
+    return intersections
 
 
 def resolve_y_wings(board: Board) -> list[YWing]:

@@ -20,6 +20,7 @@ display.full_state(board)
 # Solve
 previous_last_remaining: list[strategies.LastRemaining] = []
 previous_naked_pairs: list[strategies.NakedPair] = []
+previous_intersections: list[strategies.Intersection] = []
 previous_y_wings: list[strategies.YWing] = []
 for i in range(0, 15):
 
@@ -42,6 +43,14 @@ for i in range(0, 15):
         previous_naked_pairs = naked_pairs
         continue
     previous_naked_pairs = naked_pairs
+
+    # Resolve intersections
+    intersections = strategies.resolve_intersections(board)
+    print('Round {}; Found: {} intersection(s)'.format(i + 1, len(intersections)))
+    if intersections and not intersections == previous_intersections:
+        previous_intersections = intersections
+        continue
+    previous_intersections = intersections
 
     # Resolve Y-wings
     y_wings = strategies.resolve_y_wings(board)
