@@ -1,3 +1,5 @@
+from typing import Callable
+
 from .structures import Board, Cell, Token
 
 
@@ -5,6 +7,14 @@ LastRemaining = tuple[Cell, Token]
 NakedPair = tuple[list[Cell], list[Cell]]
 Intersection = tuple[list[Cell], Token, list[Cell]]
 YWing = tuple[tuple[Cell, Cell, Cell], Token]
+
+StrategyOutput = LastRemaining | NakedPair | Intersection | YWing
+StrategyFunction = (
+    Callable[[Board], list[LastRemaining]]
+    | Callable[[Board], list[NakedPair]]
+    | Callable[[Board], list[Intersection]]
+    | Callable[[Board], list[YWing]]
+)
 
 
 def resolve_last_remaining(board: Board) -> list[LastRemaining]:
@@ -183,4 +193,12 @@ def resolve_y_wings(board: Board) -> list[YWing]:
             cell.exclude(token)
 
     return y_wings
+
+
+tags = {
+    resolve_last_remaining.__name__: 'last remaining cell',
+    resolve_naked_pairs.__name__: 'naked pair',
+    resolve_intersections.__name__: 'intersection',
+    resolve_y_wings.__name__: 'y-wing',
+}
 
