@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - wiki-daily-pipeline
+  schedule:
+    - cron: '30 8 * * *'
 
 jobs:
   wiki-daily-pipline:
