@@ -39,6 +39,9 @@ display.full_state(board)
 
 print('')
 print('Marking')
-solution = sudoku_wiki_integrations.daily_solution_reader(script_args.puzzle_date)
-display.marking(board, solution)
+try:
+    solution = sudoku_wiki_integrations.daily_solution_reader(script_args.puzzle_date)
+    display.marking(board, solution)
+except Exception:
+    print('> Marking failed')
 
