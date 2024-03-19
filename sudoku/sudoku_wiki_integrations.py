@@ -67,7 +67,8 @@ def _daily_reader(url: str) -> Board:
     if not response.ok:
         response.raise_for_status()
 
-    puzzle_string = ''.join(response.text.split('\r\n')[66:168])
+    start_index = 67
+    puzzle_string = ''.join(response.text.split('\r\n')[start_index:start_index + 102])
     puzzle_string = html.unescape(puzzle_string)
     puzzle_table = ElementTree.fromstring(puzzle_string)
 
