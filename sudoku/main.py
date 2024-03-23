@@ -1,11 +1,13 @@
+from typing import cast
+
 from .structures import Board
 from .import strategies
 
 
 def run_solver(board: Board, strategies_to_run: list[strategies.StrategyFunction]) -> None:
 
-    previous_outputs: dict[str, list[strategies.StrategyOutput]] = {
-        strategy.__name__: [] for strategy in strategies_to_run
+    previous_outputs: dict[str, strategies.StrategyOutput] = {
+        strategy.__name__: cast(strategies.StrategyOutput, []) for strategy in strategies_to_run
     }
     for round in range(1, 16):
 
@@ -16,7 +18,7 @@ def run_solver(board: Board, strategies_to_run: list[strategies.StrategyFunction
         for strategy in strategies_to_run:
             output = strategy(board)
             output_changed = output == previous_outputs[strategy.__name__]
-            previous_outputs[strategy.__name__]
+            previous_outputs[strategy.__name__] = output
 
             print('Round {}; Found: {} {}(s){}'.format(
                 round,

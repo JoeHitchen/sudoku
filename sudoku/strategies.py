@@ -8,7 +8,7 @@ NakedPair = tuple[list[Cell], list[Cell]]
 Intersection = tuple[list[Cell], Token, list[Cell]]
 YWing = tuple[tuple[Cell, Cell, Cell], Token]
 
-StrategyOutput = LastRemaining | NakedPair | Intersection | YWing
+StrategyOutput = list[LastRemaining] | list[NakedPair] | list[Intersection] | list[YWing]
 StrategyFunction = (
     Callable[[Board], list[LastRemaining]]
     | Callable[[Board], list[NakedPair]]
