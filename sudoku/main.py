@@ -17,15 +17,15 @@ def run_solver(board: Board, strategies_to_run: list[strategies.StrategyFunction
 
         for strategy in strategies_to_run:
             output = strategy(board)
-            output_changed = output == previous_outputs[strategy.__name__]
+            output_changed = output != previous_outputs[strategy.__name__]
             previous_outputs[strategy.__name__] = output
 
             print('Round {}; Found: {} {}(s){}'.format(
                 round,
                 len(output),
                 strategies.tags[strategy.__name__],
-                '' if output_changed else '--> Unchanged',
+                '' if output_changed else ' --> Unchanged',
             ))
-            if output and not output_changed:
+            if output and output_changed:
                 break
 
